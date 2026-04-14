@@ -1,0 +1,38 @@
+{
+  "users": {
+    "admin": {
+      "password": "admin",
+      "role": "admin"
+    },
+    "user": {
+      "password": "user",
+      "role": "user"
+    }
+  },
+  "jobs": [
+    {
+      "id": 1776172905562,
+      "title": "Senior Python Developer",
+      "company": "Freedom ",
+      "description": "Test",
+      "salary_min": 2000,
+      "salary_max": 10000,
+      "language": "Python",
+      "is_internship": false,
+      "location": "Almaty ",
+      "created_by": "admin",
+      "created_at": "2026-04-14"
+    }
+  ],
+  "applications": [
+    {
+      "id": 1776172948847,
+      "job_id": 1776172905562,
+      "username": "user",
+      "skill_level": "junior",
+      "cover_letter": "WAssap ",
+      "status": "pending",
+      "applied_at": "2026-04-14"
+    }
+  ]
+}

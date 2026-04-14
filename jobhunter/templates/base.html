@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{% block title %}JobHunter{% endblock %}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0a0f;
+  --bg2: #111118;
+  --bg3: #16161f;
+  --card: #1a1a26;
+  --card2: #20202e;
+  --border: rgba(255,255,255,0.06);
+  --border2: rgba(255,255,255,0.12);
+  --accent: #6c5ce7;
+  --accent2: #a29bfe;
+  --accent3: #fd79a8;
+  --green: #00cec9;
+  --amber: #fdcb6e;
+  --text: #e8e6f0;
+  --muted: #8b8a9e;
+  --muted2: #5a5970;
+  --radius: 14px;
+  --radius-sm: 8px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6}
+h1,h2,h3,h4{font-family:'Syne',sans-serif}
+
+/* Nav */
+nav{background:rgba(10,10,15,0.85);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;padding:0 32px}
+.nav-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;height:64px;gap:24px}
+.logo{font-family:'Syne',sans-serif;font-weight:800;font-size:22px;letter-spacing:-0.5px;color:#fff;text-decoration:none;display:flex;align-items:center;gap:10px}
+.logo-dot{width:8px;height:8px;background:var(--accent);border-radius:50%;box-shadow:0 0 12px var(--accent)}
+.nav-links{display:flex;gap:4px;margin-left:auto;align-items:center}
+.nav-link{color:var(--muted);text-decoration:none;padding:8px 16px;border-radius:var(--radius-sm);font-size:14px;font-weight:500;transition:all .2s;letter-spacing:0.01em}
+.nav-link:hover{color:var(--text);background:var(--card)}
+.nav-link.active{color:var(--text);background:var(--card)}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:9px 20px;border-radius:var(--radius-sm);font-size:14px;font-weight:500;cursor:pointer;border:none;transition:all .18s;text-decoration:none;font-family:'DM Sans',sans-serif;letter-spacing:0.01em}
+.btn-primary{background:var(--accent);color:#fff;box-shadow:0 0 24px rgba(108,92,231,0.35)}
+.btn-primary:hover{background:#7d6cf0;transform:translateY(-1px);box-shadow:0 0 32px rgba(108,92,231,0.5)}
+.btn-ghost{background:transparent;color:var(--muted);border:1px solid var(--border2)}
+.btn-ghost:hover{color:var(--text);border-color:var(--border2);background:var(--card)}
+.btn-sm{padding:6px 14px;font-size:13px}
+.btn-danger{background:#e17055;color:#fff}
+.btn-danger:hover{background:#d63031}
+.badge{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;letter-spacing:0.04em;text-transform:uppercase}
+.badge-accent{background:rgba(108,92,231,0.2);color:var(--accent2);border:1px solid rgba(108,92,231,0.3)}
+.badge-green{background:rgba(0,206,201,0.15);color:var(--green);border:1px solid rgba(0,206,201,0.3)}
+.badge-amber{background:rgba(253,203,110,0.15);color:var(--amber);border:1px solid rgba(253,203,110,0.3)}
+.badge-pink{background:rgba(253,121,168,0.15);color:var(--accent3);border:1px solid rgba(253,121,168,0.3)}
+.badge-muted{background:var(--card2);color:var(--muted);border:1px solid var(--border)}
+
+/* Main layout */
+.container{max-width:1200px;margin:0 auto;padding:0 32px}
+.page-header{padding:48px 0 32px}
+.page-title{font-size:36px;font-weight:800;letter-spacing:-1px;color:#fff}
+.page-sub{color:var(--muted);font-size:15px;margin-top:6px}
+
+/* Cards */
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:24px;transition:all .2s}
+.card:hover{border-color:var(--border2);transform:translateY(-2px);box-shadow:0 8px 32px rgba(0,0,0,0.4)}
+
+/* Form */
+.form-group{display:flex;flex-direction:column;gap:6px;margin-bottom:18px}
+.form-label{font-size:13px;font-weight:500;color:var(--muted);letter-spacing:0.03em;text-transform:uppercase}
+.form-input{background:var(--bg2);border:1px solid var(--border2);border-radius:var(--radius-sm);padding:11px 14px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;transition:all .2s;outline:none}
+.form-input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(108,92,231,0.15)}
+.form-input::placeholder{color:var(--muted2)}
+select.form-input option{background:var(--bg3);color:var(--text)}
+textarea.form-input{resize:vertical;min-height:100px}
+
+/* Modal */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.7);backdrop-filter:blur(6px);z-index:200;display:none;align-items:center;justify-content:center;padding:24px}
+.modal-overlay.open{display:flex}
+.modal{background:var(--card);border:1px solid var(--border2);border-radius:20px;padding:32px;max-width:560px;width:100%;max-height:90vh;overflow-y:auto;animation:slideUp .25s ease}
+@keyframes slideUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.modal-title{font-family:'Syne',sans-serif;font-size:20px;font-weight:700;margin-bottom:20px;color:#fff}
+
+/* Misc */
+.divider{height:1px;background:var(--border);margin:24px 0}
+.empty-state{text-align:center;padding:64px 24px;color:var(--muted)}
+.empty-icon{font-size:48px;margin-bottom:12px;opacity:.4}
+.tag{display:inline-flex;align-items:center;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:500;background:var(--bg3);color:var(--muted);border:1px solid var(--border)}
+.salary{font-family:'Syne',sans-serif;font-size:17px;font-weight:700;color:var(--green)}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.toast{position:fixed;bottom:24px;right:24px;background:var(--card);border:1px solid var(--border2);padding:14px 20px;border-radius:12px;font-size:14px;z-index:300;animation:slideUp .3s ease}
+
+/* Checkbox toggle */
+.toggle-wrap{display:flex;align-items:center;gap:10px;cursor:pointer}
+.toggle{width:44px;height:24px;background:var(--bg2);border:1px solid var(--border2);border-radius:12px;position:relative;transition:.2s;cursor:pointer;appearance:none;-webkit-appearance:none}
+.toggle:checked{background:var(--accent)}
+.toggle::after{content:'';position:absolute;width:18px;height:18px;background:#fff;border-radius:50%;top:2px;left:2px;transition:.2s}
+.toggle:checked::after{left:22px}
+
+@media(max-width:768px){
+  nav{padding:0 16px}
+  .container{padding:0 16px}
+  .grid-2{grid-template-columns:1fr}
+  .page-title{font-size:26px}
+}
+</style>
+{% block extra_head %}{% endblock %}
+</head>
+<body>
+<nav>
+  <div class="nav-inner">
+    <a href="/" class="logo"><span class="logo-dot"></span>JobHunter</a>
+    {% if user %}
+      <div class="nav-links">
+        {% if user.role == 'admin' %}
+          <a href="/admin/applications" class="nav-link">Өтініштер</a>
+          <button class="btn btn-primary btn-sm" onclick="document.getElementById('createModal').classList.add('open')">+ Жұмыс жариялау</button>
+        {% else %}
+          <a href="/my/applications" class="nav-link">Менің өтініштерім</a>
+        {% endif %}
+        <div style="width:1px;height:28px;background:var(--border);margin:0 8px"></div>
+        <span style="font-size:13px;color:var(--muted)">{{ user.username }}</span>
+        <a href="/logout" class="btn btn-ghost btn-sm">Шығу</a>
+      </div>
+    {% else %}
+      <div class="nav-links">
+        <a href="/login" class="btn btn-primary btn-sm">Кіру</a>
+      </div>
+    {% endif %}
+  </div>
+</nav>
+
+{% block content %}{% endblock %}
+
+{% if user and user.role == 'admin' %}
+<!-- Create Job Modal -->
+<div class="modal-overlay" id="createModal" onclick="if(event.target===this)this.classList.remove('open')">
+  <div class="modal">
+    <div class="modal-title">Жаңа жұмыс орны</div>
+    <form method="post" action="/jobs/create">
+      <div class="form-group">
+        <label class="form-label">Лауазым</label>
+        <input name="title" class="form-input" placeholder="Senior Python Developer" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Компания</label>
+        <input name="company" class="form-input" placeholder="Kaspi Bank" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Орналасқан жер</label>
+        <input name="location" class="form-input" placeholder="Алматы / Remote" required>
+      </div>
+      <div class="grid-2">
+        <div class="form-group">
+          <label class="form-label">Жалақы ($)</label>
+          <input name="salary_min" type="number" class="form-input" placeholder="2000" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Жалақыға дейін ($)</label>
+          <input name="salary_max" type="number" class="form-input" placeholder="4000" required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Бағдарламалау тілі</label>
+        <select name="language" class="form-input" required>
+          <option value="Python">Python</option>
+          <option value="Java">Java</option>
+          <option value="C++">C++</option>
+          <option value="JavaScript">JavaScript</option>
+          <option value="Go">Go</option>
+          <option value="Rust">Rust</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Жұмыс орны сипаттамасы</label>
+        <textarea name="description" class="form-input" placeholder="Жұмыс орны, талаптар мен міндеттер туралы жазыңыз..." rows="4" required></textarea>
+      </div>
+      <div class="form-group">
+        <label class="toggle-wrap">
+          <input type="checkbox" name="is_internship" class="toggle" value="true">
+          <span style="font-size:14px;color:var(--text)">Бұл тағылымдама</span>
+        </label>
+      </div>
+      <div style="display:flex;gap:10px;margin-top:4px">
+        <button type="submit" class="btn btn-primary" style="flex:1">Жариялау</button>
+        <button type="button" class="btn btn-ghost" onclick="document.getElementById('createModal').classList.remove('open')">Болдырмау</button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endif %}
+
+<script>
+document.addEventListener('keydown',e=>{if(e.key==='Escape')document.querySelectorAll('.modal-overlay').forEach(m=>m.classList.remove('open'))})
+</script>
+</body>
+</html>

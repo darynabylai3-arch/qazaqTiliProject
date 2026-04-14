@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block title %}Менің өтініштерім — JobHunter{% endblock %}
+
+{% block extra_head %}
+<style>
+.app-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:22px;margin-bottom:14px;transition:.2s;position:relative;overflow:hidden}
+.app-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;border-radius:3px 0 0 3px}
+.app-card.status-pending::before{background:var(--amber)}
+.app-card.status-accepted::before{background:var(--green)}
+.app-card.status-rejected::before{background:#e17055}
+.job-title-big{font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:#fff;margin-bottom:3px}
+.cover-text{font-size:14px;color:var(--muted);line-height:1.7;padding:12px 16px;background:var(--bg2);border-radius:8px;border-left:3px solid var(--border2);margin-top:12px}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="page-header">
+    <div class="page-title">Менің өтініштерім</div>
+    <div class="page-sub">{{ applications|length }} өтініш жіберілді</div>
+  </div>
+
+  {% if applications %}
+    {% for app in applications %}
+    <div class="app-card status-{{ app.status }}">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px">
+        <div>
+          <div class="job-title-big">
+            {% if app.job %}{{ app.job.title }}{% else %}Жұмыс орны жойылды{% endif %}
+          </div>
+          <div style="font-size:14px;color:var(--muted);margin-top:2px">
+            {% if app.job %}{{ app.job.company }} · {{ app.job.location }}{% endif %}
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px">
+          {% if app.status == 'pending' %}
+            <span class="badge badge-amber">⏳ Қаралуда</span>
+          {% elif app.status == 'accepted' %}
+            <span class="badge badge-green">✓ Сіз қабылдандыңыз!</span>
+          {% else %}
+            <span class="badge" style="background:rgba(225,112,85,0.15);color:#f0997b;border:1px solid rgba(225,112,85,0.3)">✗ Қабылданбады</span>
+          {% endif %}
+          {% if app.job %}
+            <div class="salary">${{ "{:,}".format(app.job.salary_min) }}–${{ "{:,}".format(app.job.salary_max) }}</div>
+          {% endif %}
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap">
+        <span class="badge badge-accent">{{ app.skill_level | upper }}</span>
+        {% if app.job %}
+          <span class="badge badge-muted">{{ app.job.language }}</span>
+          {% if app.job.is_internship %}<span class="badge badge-pink">Тағылымдама</span>{% endif %}
+        {% endif %}
+        <span class="badge badge-muted">📅 {{ app.applied_at }}</span>
+      </div>
+      <div class="cover-text">{{ app.cover_letter }}</div>
+    </div>
+    {% endfor %}
+  {% else %}
+    <div class="empty-state">
+      <div class="empty-icon">📝</div>
+      <div style="font-family:'Syne',sans-serif;font-size:18px;font-weight:600;margin-bottom:8px">Сіз әлі ештеңеге өтініш жібермедіңіз</div>
+      <div style="font-size:14px;margin-bottom:20px">Басты бетке өтіп, лайықты жұмыс орнын табыңыз</div>
+      <a href="/" class="btn btn-primary">Жұмыс орындарын қарау</a>
+    </div>
+  {% endif %}
+</div>
+{% endblock %}

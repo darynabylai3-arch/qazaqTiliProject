@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block title %}Өтініштер — JobHunter{% endblock %}
+
+{% block extra_head %}
+<style>
+.app-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;transition:.2s;margin-bottom:12px}
+.app-card:hover{border-color:var(--border2)}
+.app-header{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:12px}
+.app-user{font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:#fff}
+.app-job{font-size:14px;color:var(--muted);margin-top:2px}
+.cover{font-size:14px;color:var(--muted);line-height:1.7;padding:12px 16px;background:var(--bg2);border-radius:var(--radius-sm);border-left:3px solid var(--accent);margin-bottom:12px}
+.status-form{display:flex;gap:8px;align-items:center}
+.status-select{background:var(--bg2);border:1px solid var(--border2);border-radius:var(--radius-sm);padding:7px 12px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer}
+.status-pending{color:var(--amber)}
+.status-accepted{color:var(--green)}
+.status-rejected{color:#e17055}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="page-header">
+    <div class="page-title">Барлық өтініштер</div>
+    <div class="page-sub">{{ applications|length }} өтініш жұмысқа</div>
+  </div>
+  
+  {% if applications %}
+    {% for app in applications %}
+    <div class="app-card">
+      <div class="app-header">
+        <div>
+          <div class="app-user">👤 {{ app.username }}</div>
+          <div class="app-job">
+            {% if app.job %}
+              {{ app.job.title }} · {{ app.job.company }}
+            {% else %}
+              Жұмыс орны жойылды
+            {% endif %}
+          </div>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <span class="badge badge-accent">{{ app.skill_level | upper }}</span>
+          <span class="badge badge-muted">{{ app.applied_at }}</span>
+          {% if app.status == 'pending' %}
+            <span class="badge badge-amber">Қаралуда</span>
+          {% elif app.status == 'accepted' %}
+            <span class="badge badge-green">✓ Қабылданды</span>
+          {% else %}
+            <span class="badge" style="background:rgba(225,112,85,0.15);color:#f0997b;border:1px solid rgba(225,112,85,0.3)">✗ Қабылданбады</span>
+          {% endif %}
+        </div>
+      </div>
+      <div class="cover">{{ app.cover_letter }}</div>
+      <div class="status-form">
+        <form method="post" action="/admin/applications/{{ app.id }}/status" style="display:flex;gap:8px;align-items:center">
+          <select name="status" class="status-select">
+            <option value="pending" {% if app.status=='pending' %}selected{% endif %}>Қаралуда</option>
+            <option value="accepted" {% if app.status=='accepted' %}selected{% endif %}>Қабылданды</option>
+            <option value="rejected" {% if app.status=='rejected' %}selected{% endif %}>Қабылданбады</option>
+          </select>
+          <button type="submit" class="btn btn-primary btn-sm">Сақтау</button>
+        </form>
+      </div>
+    </div>
+    {% endfor %}
+  {% else %}
+    <div class="empty-state">
+      <div class="empty-icon">📭</div>
+      <div style="font-family:'Syne',sans-serif;font-size:18px;font-weight:600;margin-bottom:6px">Өтініштер әлі жоқ</div>
+      <div style="font-size:14px">Жұмыс орындары жарияланып, кандидаттар өтініш жібере бастайды</div>
+    </div>
+  {% endif %}
+</div>
+{% endblock %}
